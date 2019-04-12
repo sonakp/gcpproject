@@ -10,7 +10,7 @@ def home():
 
 
 @app.route('/enternew')
-def new_student():
+def enternew():
     return render_template('student.html')
 
 
@@ -19,23 +19,22 @@ def addrec():
     if request.method == 'POST':
         try:
             nm = request.form['nm']
-            addr = request.form['add']
+            #addr = request.form['add']
             city = request.form['city']
-            pin = request.form['pin']
+            #pin = request.form['pin']
 
             with sql.connect("database.db") as con:
                 cur = con.cursor()
-
-                cur.execute("INSERT INTO students (name,city) VALUES(?, ?)",(nm,city) )
-
+                cur.execute("INSERT INTO students (name,city) VALUES(?,?)",(nm,city) )
                 con.commit()
-                msg = "Record successfully added"
+                msg1 = "Record successfully added"
         except:
+            #with sql.connect("database.db") as con:
             con.rollback()
-            msg = "error in insert operation"
+            msg1 = "error in insert operation"
 
         finally:
-            return render_template("result.html", msg=msg)
+            return render_template("result.html", msg=msg1)
             con.close()
 
 
@@ -47,7 +46,7 @@ def list():
     cur = con.cursor()
     cur.execute("select * from students")
 
-    rows = cur.fetchall();
+    rows = cur.fetchall()
     return render_template("list.html", rows=rows)
 
 
